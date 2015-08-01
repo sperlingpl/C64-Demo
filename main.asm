@@ -59,7 +59,8 @@
 
 line1:      .text "       sperling in 2015 presents..."
 line2:      .text "            demo of the year!              "
-ready:      .text "ready. "
+ready:      .text "ready." 
+			.byte NULL
 
 color:
             .byte $09,$09,$02,$02,$08
@@ -352,11 +353,13 @@ clear_chars_clear_one:
 draw_ready_text:
             ldx #$00
 draw_ready_text_loop:
-            lda ready, x
-            sta $0590, x
+            lda ready, x				// Load text char.
+            sta $0590, x				// Draw text character on screen.
             
-            inx
-            cmp #$20
+            inx							// Increase current char counter.
+            
+            lda ready, x
+            cmp #$00					// Check if text is null-ended.
             bne draw_ready_text_loop
             
             rts
